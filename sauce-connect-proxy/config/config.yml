@@ -1,0 +1,10 @@
+api-key: "{{cfg.api-key}}"
+max-missed-acks: 30
+metrics-address: "localhost:8888"
+no-autodetect: false
+no-proxy-caching: false
+no-remove-colliding-tunnels: false
+reconnect: 30
+se-port: 4445
+user: "{{cfg.user}}"
+verbose: 0
