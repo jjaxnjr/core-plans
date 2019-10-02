@@ -9,20 +9,7 @@ pkg_source="https://saucelabs.com/downloads/sc-${pkg_version}-linux.tar.gz"
 pkg_shasum=6eb18a5a3f77b190fa0bb48bcda4694d26731703ac3ee56499f72f820fe10ef1
 pkg_filename="sc-${pkg_version}-linux.tar.gz"
 pkg_deps=(
-  core/gcc-libs
   core/glibc
-  core/icu52
-  core/krb5
-  core/libunwind
-  core/lttng-ust
-  core/openssl
-  core/util-linux
-  core/zlib
-  core/linux-headers
-  core/gnupg
-  core/curl
-  core/binutils
-  core/gcc
 )
 pkg_build_deps=(
   core/patchelf
@@ -39,14 +26,10 @@ do_build() {
   return 0
 }
 
-do_prepare() {
-  find . -type f -name 'sc' \
-    -exec patchelf --interpreter "$(pkg_path_for glibc)/lib/ld-linux-x86-64.so.2" --set-rpath "$LD_RUN_PATH" {} \;
-}
-
 do_install() {
-cp -a "${HAB_CACHE_SRC_PATH}/sc-${pkg_version}-linux/bin/sc" "${pkg_prefix}/bin"
+  cp -a "${HAB_CACHE_SRC_PATH}/sc-${pkg_version}-linux/bin/sc" "${pkg_prefix}/bin"
   chmod o+r -R "${pkg_prefix}/bin"
+  patchelf --set-interpreter "$(pkg_path_for glibc)/lib/ld-linux-x86-64.so.2" "${pkg_prefix}/bin/sc";
 }
 
 do_strip() {
